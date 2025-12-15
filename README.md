@@ -18,7 +18,7 @@ This project follows Clean Architecture with clear separation of concerns:
 
 - .NET 8.0 SDK or later
 - Visual Studio 2022 or Visual Studio Code
-- SQL Server (or your preferred database)
+- PostgreSQL
 
 ### Installation
 
@@ -36,9 +36,10 @@ dotnet restore
 3. Update the connection string in `appsettings.json`:
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "your-connection-string-here"
+  "DefaultConnection": "Host=localhost;Port=5432;Database=mango_user_service;Username=your-username;Password=your-password"
 }
 ```
+**Note:** Never commit real database credentials to version control. Use environment variables or secure configuration management for production.
 
 4. Run the application:
 ```bash
@@ -72,7 +73,8 @@ dotnet test
 
 - **.NET** - Framework
 - **ASP.NET Core** - Web API framework
-- **Entity Framework Core** - ORM (if applicable)
+- **Dapper** - Micro ORM for data access
+- **PostgreSQL** - Database
 - **Clean Architecture** - Architectural pattern
 
 ## 📦 Project Structure
