@@ -22,14 +22,18 @@ public class UserService : IUserService
     if (await _userRepository.EmailExistsAsync(request.Email))
       throw new Exception("Email already exists");
 
+    // Default role to "Farmer" if not provided (UI doesn't collect role during registration)
+    var role = string.IsNullOrWhiteSpace(request.Role) ? "Farmer" : request.Role;
+
     // Hash the password (not done here for simplicity)  
     var user = new User
     {
       UserId = Guid.NewGuid(),
-      FullName = request.FullName,
+      FirstName = request.FirstName,
+      LastName = request.LastName,
       Email = request.Email.ToLowerInvariant(),
       PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password), // Simulated hash  
-      Role = Enum.Parse<UserRole>(request.Role, ignoreCase: true),
+      Role = Enum.Parse<UserRole>(role, ignoreCase: true),
       CreatedAt = DateTime.UtcNow
     };
 
@@ -42,6 +46,8 @@ public class UserService : IUserService
       UserId = user.UserId,
       Email = user.Email,
       PasswordHash = user.PasswordHash,
+      FirstName = user.FirstName,
+      LastName = user.LastName,
       FullName = user.FullName,
       Role = user.Role.ToString(),
       CreatedAt = user.CreatedAt
@@ -52,6 +58,8 @@ public class UserService : IUserService
     return new UserResponse
     {
       UserId = user.UserId,
+      FirstName = user.FirstName,
+      LastName = user.LastName,
       FullName = user.FullName,
       Email = user.Email,
       Role = user.Role.ToString(),

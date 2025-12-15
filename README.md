@@ -60,6 +60,43 @@ Once the application is running, you can access:
 - Swagger UI: `https://localhost:{port}/swagger`
 - API endpoints: `https://localhost:{port}/api`
 
+### User Registration API
+
+The registration endpoint accepts the following fields to match the frontend UI:
+
+**POST** `/api/v1/users/register`
+
+**Request Body:**
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "password": "SecurePassword123",
+  "role": "Farmer"  // Optional: Defaults to "Farmer" if not provided. Valid values: Farmer, Reseller, Wholesaler
+}
+```
+
+**Response:**
+```json
+{
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "firstName": "John",
+  "lastName": "Doe",
+  "fullName": "John Doe",
+  "email": "john.doe@example.com",
+  "role": "Farmer",
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+
+**Validation Rules:**
+- `firstName`: Required, max 50 characters
+- `lastName`: Required, max 50 characters
+- `email`: Required, valid email format
+- `password`: Required, minimum 8 characters
+- `role`: Optional (defaults to "Farmer"), must be one of: Farmer, Reseller, Wholesaler
+
 ## 🧪 Testing
 
 Run the test suite:
