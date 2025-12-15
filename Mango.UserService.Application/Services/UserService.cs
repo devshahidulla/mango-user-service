@@ -23,17 +23,22 @@ public class UserService : IUserService
       throw new Exception("Email already exists");
 
     // Default role to "Farmer" if not provided (UI doesn't collect role during registration)
-    var role = string.IsNullOrWhiteSpace(request.Role) ? "Farmer" : request.Role;
+    var roleString = string.IsNullOrWhiteSpace(request.Role) ? "Farmer" : request.Role;
 
-    // Hash the password (not done here for simplicity)  
+    // Parse and validate the role enum
+    if (!Enum.TryParse<UserRole>(roleString, ignoreCase: true, out var userRole))
+    {
+      throw new ArgumentException($"Invalid role: {roleString}. Must be one of: {string.Join(", ", Enum.GetNames<UserRole>())}");
+    }
+
     var user = new User
     {
       UserId = Guid.NewGuid(),
       FirstName = request.FirstName,
       LastName = request.LastName,
       Email = request.Email.ToLowerInvariant(),
-      PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password), // Simulated hash  
-      Role = Enum.Parse<UserRole>(role, ignoreCase: true),
+      PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+      Role = userRole,
       CreatedAt = DateTime.UtcNow
     };
 

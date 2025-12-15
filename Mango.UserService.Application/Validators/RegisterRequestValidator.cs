@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Mango.UserService.Application.DTOs;
+using Mango.UserService.Domain.Enums;
 
 namespace Mango.UserService.Application.Validators;
 
@@ -24,15 +25,15 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
         .MinimumLength(8).WithMessage("Password must be at least 8 characters.");
 
     RuleFor(x => x.Role)
-        .Must(BeAValidRole!)
+        .Must(BeAValidRole)
         .When(x => !string.IsNullOrWhiteSpace(x.Role))
-        .WithMessage("Role must be one of: Farmer, Reseller, Wholesaler.");
+        .WithMessage($"Role must be one of: {string.Join(", ", Enum.GetNames<UserRole>())}.");
   }
 
   private bool BeAValidRole(string? role)
   {
     if (string.IsNullOrWhiteSpace(role))
       return true; // Role is optional
-    return new[] { "Farmer", "Reseller", "Wholesaler" }.Contains(role, StringComparer.OrdinalIgnoreCase);
+    return Enum.GetNames<UserRole>().Contains(role, StringComparer.OrdinalIgnoreCase);
   }
 }

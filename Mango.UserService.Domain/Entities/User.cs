@@ -1,4 +1,5 @@
-﻿using Mango.UserService.Domain.Enums;
+﻿using System.Linq;
+using Mango.UserService.Domain.Enums;
 
 namespace Mango.UserService.Domain.Entities;
 
@@ -15,5 +16,5 @@ public class User
   /// <summary>
   /// Computed property for full name (FirstName + LastName)
   /// </summary>
-  public string FullName => $"{FirstName} {LastName}";
+  public string FullName => string.Join(" ", new[] { FirstName?.Trim(), LastName?.Trim() }.Where(s => !string.IsNullOrWhiteSpace(s)));
 }
