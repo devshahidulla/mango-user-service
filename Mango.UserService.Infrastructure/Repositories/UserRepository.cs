@@ -16,7 +16,7 @@ public class UserRepository : IUserRepository
 
   public async Task<bool> EmailExistsAsync(string email)
   {
-    const string query = "SELECT 1 FROM Users WHERE Email = @Email LIMIT 1";
+    const string query = "SELECT 1 FROM users WHERE email = @Email LIMIT 1";
     var result = await _db.QueryFirstOrDefaultAsync<int?>(query, new { Email = email });
     return result.HasValue;
   }
@@ -24,8 +24,8 @@ public class UserRepository : IUserRepository
   public async Task AddAsync(User user)
   {
     const string query = @"
-            INSERT INTO Users (UserId, FullName, Email, PasswordHash, Role, CreatedAt)
-            VALUES (@UserId, @FullName, @Email, @PasswordHash, @Role, @CreatedAt)";
+            INSERT INTO users (userid, firstname, lastname, email, passwordhash, role, createdat)
+            VALUES (@UserId, @FirstName, @LastName, @Email, @PasswordHash, @Role, @CreatedAt)";
 
     await _db.ExecuteAsync(query, user);
   }
