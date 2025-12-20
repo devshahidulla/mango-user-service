@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Mango.UserService.Application.DTOs;
+using Mango.UserService.Domain.Enums;
 
 namespace Mango.UserService.Application.Validators;
 
@@ -7,9 +8,13 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
   public RegisterRequestValidator()
   {
-    RuleFor(x => x.FullName)
-        .NotEmpty().WithMessage("Full name is required.")
-        .MaximumLength(100);
+    RuleFor(x => x.FirstName)
+        .NotEmpty().WithMessage("First name is required.")
+        .MaximumLength(50).WithMessage("First name must not exceed 50 characters.");
+
+    RuleFor(x => x.LastName)
+        .NotEmpty().WithMessage("Last name is required.")
+        .MaximumLength(50).WithMessage("Last name must not exceed 50 characters.");
 
     RuleFor(x => x.Email)
         .NotEmpty().WithMessage("Email is required.")
@@ -17,16 +22,18 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 
     RuleFor(x => x.Password)
         .NotEmpty().WithMessage("Password is required.")
-        .MinimumLength(6).WithMessage("Password must be at least 6 characters.");
+        .MinimumLength(8).WithMessage("Password must be at least 8 characters.");
 
     RuleFor(x => x.Role)
-        .NotEmpty().WithMessage("Role is required.")
         .Must(BeAValidRole)
-        .WithMessage("Role must be one of: Farmer, Reseller, Wholesaler.");
+        .When(x => !string.IsNullOrWhiteSpace(x.Role))
+        .WithMessage($"Role must be one of: {string.Join(", ", Enum.GetNames<UserRole>())}.");
   }
 
-  private bool BeAValidRole(string role)
+  private bool BeAValidRole(string? role)
   {
-    return new[] { "Farmer", "Reseller", "Wholesaler" }.Contains(role, StringComparer.OrdinalIgnoreCase);
+    if (string.IsNullOrWhiteSpace(role))
+      return true; // Role is optional
+    return Enum.GetNames<UserRole>().Contains(role, StringComparer.OrdinalIgnoreCase);
   }
 }
