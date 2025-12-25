@@ -32,6 +32,14 @@ builder.Services.AddScoped<IEventPublisher, EventBridgePublisher>();
 
 var app = builder.Build();
 
+// Health check endpoint for Docker
+app.MapGet("/health", () => Results.Ok(new 
+{ 
+    status = "healthy", 
+    service = "mango-user-service",
+    timestamp = DateTime.UtcNow 
+}));
+
 if (app.Environment.IsDevelopment())
 {
   app.UseSwagger();               // generates Swagger JSON  
