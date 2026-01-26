@@ -4,14 +4,30 @@ This project handles database schema migrations for the Mango User Service.
 
 ## Running Migrations
 
+### Option 1: Local .NET Runtime
 ```bash
 cd Mango.UserService.Migrations
 dotnet run
 ```
 
+### Option 2: Docker Container
+```powershell
+# Build the Docker image
+.\build-migrations-image.ps1
+
+# Run migrations in Docker
+docker run --rm -e ConnectionStrings__DefaultConnection="Host=host.docker.internal;Port=5432;Database=mongo_user_service;Username=postgres;Password=your_password" mango-user-service-migrations:latest
+```
+
+### Option 3: Docker Compose (with PostgreSQL)
+```bash
+# Start PostgreSQL and run migrations
+docker-compose up
+```
+
 ## Configuration
 
-Update `appsettings.json` with your PostgreSQL connection string.
+Update `appsettings.json` with your PostgreSQL connection string, or use environment variables in Docker.
 
 ## Available Migrations
 

@@ -1,6 +1,6 @@
 # Mango User Service
 
-A microservice for managing user operations in the Mango application, built with .NET and following Clean Architecture principles.
+A microservice for managing user operations in the Mango application, built with .NET 9.0 and following Clean Architecture principles.
 
 ## 🏗️ Architecture
 
@@ -10,15 +10,41 @@ This project follows Clean Architecture with clear separation of concerns:
 - **Mango.UserService.Application** - Business logic and use cases
 - **Mango.UserService.Domain** - Domain entities and business rules
 - **Mango.UserService.Infrastructure** - Data access and external services
+- **Mango.UserService.Migrations** - Database migrations
 - **Mango.UserService.Tests** - Unit and integration tests
 
-## 🚀 Getting Started
+## 🐳 Docker Support
+
+### Quick Start with Docker Compose
+```bash
+docker-compose up -d
+```
+This starts the User Service API and connects to your existing PostgreSQL database.
+
+### Access the API
+- **API:** http://localhost:5001
+- **Swagger:** http://localhost:5001/swagger
+- **Health:** http://localhost:5001/health
+
+### Available Docker Images
+- `mango-user-service-api:latest` (338MB) - The API service on port 5001
+- `mango-user-service-migrations:latest` (287MB) - Database migrations
+
+### Port Configuration
+- **User API:** 5001 (no conflict with UI on 8080)
+- **PostgreSQL:** 5432 (running on host machine)
+
+📖 **See [QUICK_START.md](./QUICK_START.md) for quick reference**
+📖 **See [DOCKER_API_GUIDE.md](./DOCKER_API_GUIDE.md) for complete Docker documentation**
+
+## 🚀 Getting Started (Local Development)
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
-- Visual Studio 2022 or Visual Studio Code
-- SQL Server (or your preferred database)
+- .NET 9.0 SDK or later
+- Visual Studio 2022 / Rider or Visual Studio Code
+- PostgreSQL 16+
+- Docker (optional, for containerized deployment)
 
 ### Installation
 
@@ -36,13 +62,20 @@ dotnet restore
 3. Update the connection string in `appsettings.json`:
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "your-connection-string-here"
+  "DefaultConnection": "Host=localhost;Port=5432;Database=mongo_user_service;Username=postgres;Password=your_password"
 }
 ```
 
-4. Run the application:
+4. Run database migrations:
 ```bash
-dotnet run --project Mango.UserService.API
+cd Mango.UserService.Migrations
+dotnet run
+```
+
+5. Run the application:
+```bash
+cd ../Mango.UserService.API
+dotnet run
 ```
 
 ## 🔧 Configuration

@@ -1,5 +1,5 @@
 ﻿-- Migration: Create users table
--- Database: mongo_user_service
+-- Database: mango_user_service
 -- Description: Initial table creation for user management
 
 CREATE TABLE IF NOT EXISTS users (
