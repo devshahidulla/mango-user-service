@@ -3,7 +3,9 @@
 services:
   # User Service API
   user-api:
-    image: mango-user-service-api:latest
+    build:
+      context: .
+      dockerfile: Mango.UserService.API/Dockerfile
     container_name: mango-user-api
     ports:
       - "5001:5001"
@@ -31,5 +33,3 @@ services:
 networks:
   mango-network:
     driver: bridge
-
-
