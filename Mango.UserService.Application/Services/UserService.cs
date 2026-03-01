@@ -46,7 +46,7 @@ public class UserService : IUserService
     await _userRepository.AddAsync(user);
 
     // Publish user registered event (if using event-driven architecture)
-    await _eventPublisher.PublishAsync("UserRegistered", "mango.user-service", new UserRegisteredEvent
+    await _eventPublisher.PublishAsync("UserRegistered", "mango-user-service", new UserRegisteredEvent
     {
       UserId = user.UserId,
       Email = user.Email,
