@@ -4,7 +4,6 @@
     build:
       context: .
       dockerfile: Mango.UserService.API/Dockerfile
-    image: mango-user-service-api:latest
     container_name: mango-user-api
     ports:
       - "5001:5001"
